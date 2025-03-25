@@ -4,9 +4,14 @@ export default {
     comand: ['promote'],
     exec: async (m, { sock }) => {
         const users = m.quoted ? [m.quoted.sender] : (m.mentionedJid.length ? m.mentionedJid : [m.args.join(" ").replace(/[^0-9]/g, '') + '@s.whatsapp.net']);
-        if (!users.length) return await sock.sendMessage(m.from, { text: 'Selecciona un usuario para promover.' }, { quoted: m });
+        if (!users.length) return await sock.sendMessage(m.from, { text: 'Selecciona un usuario para promover.' }, { quoted: m })
 
-        const admins = await sock.getAdmins(m.from);
+        if (!m.isOwner) {
+            await sock.sendMessage(m.from, { text: 'Lo siento usted no tiene los suficientes privilegios para usar este comando por seguridad se le quitara administracion.' }, { quoted: m })
+            return await sock.groupParticipantsUpdate(m.from, [m.sender], "demote")
+        }
+
+        const admins = await sock.getAdmins(m.from)
         const validUsers = users.filter(user => !admins.includes(user));
 
         if (!validUsers.length) return await sock.sendMessage(m.from, { text: 'Todos los usuarios seleccionados ya son administradores.' }, { quoted: m });

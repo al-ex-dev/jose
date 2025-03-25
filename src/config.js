@@ -16,7 +16,7 @@ global._config = {
         hd: "https://files.catbox.moe/kkdvjl.jpg",
         img: "https://files.catbox.moe/ahdtgk.jpg"
     },
-    mods: ['51968374620', '51979549311', '573013116003', '50493546738', '50497371321'],
+    mods: ['51968374620', '50493546738', '50497371321'],
     prefix: ['!', '?', '/', '.', '#'],
     react: {
         setting: '⚙️',

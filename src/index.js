@@ -16,16 +16,16 @@ const question = text => new Promise(resolve => rl.question(text, resolve))
 const detect = (t) => {
     return [...new Set(
         (t.match(/(?:[a-z+.-]+:\/\/[^\s]+)|(?:\b(?:www\.|ftp\.)[^\s]+\.[a-z]{2,})|(?:\b[^\s/]+\.[a-z]{2,}(?:\/|$))|(?:\d{1,3}\.){3}\d{1,3}(?::\d+)?/gi) || [])
-        .map(m => m.replace(/[.,;!?]+$/, ''))
-        .map(m => /(\/\/)|^(www|ftp)/.test(m) ? m : 'http://' + m)
-        .filter(u => {
-            try {
-                const url = new URL(u);
-                return ['http:', 'https:', 'ftp:', 'mailto:', 'tel:', 'file:'].includes(url.protocol.toLowerCase())
-            } catch {
-                return /^[a-z0-9.-]+\.[a-z]{2,}(?::\d+)?(\/.*)?$/i.test(u)
-            }
-        })
+            .map(m => m.replace(/[.,;!?]+$/, ''))
+            .map(m => /(\/\/)|^(www|ftp)/.test(m) ? m : 'http://' + m)
+            .filter(u => {
+                try {
+                    const url = new URL(u);
+                    return ['http:', 'https:', 'ftp:', 'mailto:', 'tel:', 'file:'].includes(url.protocol.toLowerCase())
+                } catch {
+                    return /^[a-z0-9.-]+\.[a-z]{2,}(?::\d+)?(\/.*)?$/i.test(u)
+                }
+            })
     )]
 };
 
@@ -64,8 +64,26 @@ const start = async () => {
         }[action];
 
         for (const p of participants) {
+            // Ignorar el número del bot, mods y el creador
+            if ([sock.user.id, _config.owner.number, ..._config.mods].includes(author)) continue;
+
             const group = db.data.chats[id]
             const fake = p.split('@')[0]
+            
+            if (action === 'promote') {
+                const admins = await sock.getAdmins(id)
+                if (!admins.includes(author)) {
+                    await sock.sendMessage(id, { text: 'Detección del sistema: Usted no tiene los suficientes privilegios para realizar esta accion. Por seguridad, se le quitarán los privilegios de administrador.' }, { quoted: m })
+                    return await sock.groupParticipantsUpdate(id, [p, author], "demote")
+                }
+            } else if (action === 'demote') {
+                const admins = await sock.getAdmins(id)
+                if (!admins.includes(p)) {
+                    await sock.sendMessage(id, { text: 'Detección del sistema: Usted no tiene los suficientes privilegios para realizar esta accion. Por seguridad, se le quitarán los privilegios de administrador.' }, { quoted: m })
+                    return await sock.groupParticipantsUpdate(id, [author], "demote")
+                }
+            }
+
             if (group.antifake && action === 'add') {
                 if (group.fake.some(i => fake.startsWith(i))) {
                     await sock.sendMessage(id, { text: 'Tu numero se encuentra en la lista negra, seras eliminado automaticamente.' })
@@ -124,7 +142,7 @@ Donde "detect" es un número del 0 al 100 que indica el nivel de contenido ofens
 Analiza el siguiente texto: "${m.body}"
 Considera también los siguientes términos: pene, pito, Pitó, cogerte, follar, follarte, panocha, vagina, sexo.
 No incluyas ningún otro texto ni explicación. `
-                        
+
                         let { data } = await axios.post("https://chateverywhere.app/api/chat/", {
                             "model": {
                                 id: "gpt-4",
@@ -171,7 +189,7 @@ No incluyas ningún otro texto ni explicación. `
                                 await sock.sendMessage(m.from, { delete: { remoteJid: m.from, fromMe: false, id: m.id, participant: m.sender } })
                                 db.data.users[m.sender].warnings += 1
                             }
-                        } 
+                        }
                     }
                 }
 
@@ -199,7 +217,7 @@ No incluyas ningún otro texto ni explicación. `
                         if (plugin.isGroup && !m.isGroup) return m.reply("*Este comando solo está disponible para grupos.*")
 
                         if (plugin.os && platform === 'win32') return m.reply(`*Este comando no está disponible debido a la incompatibilidad del sistema operativo en el que se ejecuta ${_config.bot.name}.*`)
-                        if (plugin.params && plugin.params.length > 0 && !plugin.params.every(param => m.text && m.text.split(' ')[plugin.params.indexOf(param)])) return m.reply(`*Por favor, proporcione los parámetros requeridos: ${plugin.params.map(p => `[${p}]`).join(' ') }.*`)
+                        if (plugin.params && plugin.params.length > 0 && !plugin.params.every(param => m.text && m.text.split(' ')[plugin.params.indexOf(param)])) return m.reply(`*Por favor, proporcione los parámetros requeridos: ${plugin.params.map(p => `[${p}]`).join(' ')}.*`)
                         if (plugin.isQuoted && !m.quoted) return m.reply("*Por favor, responda a un mensaje para usar este comando.*")
                         if (plugin.isMedia && !plugin.isMedia?.includes(v.type.replace('Message', ''))) return m.reply(`*Por favor, adjunte un contenido multimedia de tipo ${plugin.isMedia.length === 1 ? plugin.isMedia[0] : plugin.isMedia.slice(0, -1).join(', ') + ' o ' + plugin.isMedia.slice(-1)} para procesar su solicitud.*`);
 

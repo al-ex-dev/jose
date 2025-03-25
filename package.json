@@ -25,7 +25,7 @@
   "homepage": "https://github.com/Alexito-Hub/ziooo-base#readme",
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
-    "@al-e-dev/baileys": "github:Nazi-Team/Baileys#development",
+    "@nazi-team/baileys": "^6.7.14",
     "@hiudyy/ytdl": "^0.2.3",
     "axios": "^1.7.9",
     "axios-cookiejar-support": "^5.0.5",

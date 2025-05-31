@@ -1,4 +1,4 @@
-{
+cdnode{
   "name": "zio",
   "version": "0.1.0",
   "description": "El mejor bot de WhatsApp",
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/Alexito-Hub/ziooo-base#readme",
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
-    "@nazi-team/baileys": "git@github.com:Skidy89/Baileys",
+    "@nazi-team/baileys": "git@Skidy89/Baileys",
     "@hiudyy/ytdl": "^0.2.3",
     "axios": "^1.7.9",
     "axios-cookiejar-support": "^5.0.5",

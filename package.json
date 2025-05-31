@@ -29,6 +29,7 @@
     "@hiudyy/ytdl": "^0.2.3",
     "axios": "^1.7.9",
     "axios-cookiejar-support": "^5.0.5",
+    "qrcode": "^1.5.4",
     "child_process": "^1.0.2",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",

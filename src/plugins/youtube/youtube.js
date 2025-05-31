@@ -16,14 +16,7 @@ export default {
 
         sock.sendMessage(m.from, {
             caption: `*⤷𝙳̷ 𝙾̷ 𝚆̷ 𝙽̷ 𝙻̷ 𝙾̷ 𝙰̷ 𝙳̷-𝙼̷ 𝚄̷ 𝚂̷ 𝙸̷ 𝙲̷⤶*\n\n*🔹Título:* ${video.title}\n*🔹Duración:* ${video.duration}\n*🔹Canal:* ${video.author}\n*🔹Vistas:* ${video.viewers}\n*🔹Subido:* ${video.published}\n\n𝒯𝒾𝑒𝓂𝓅𝑜 𝓁𝒾𝓂𝒾𝓉𝑒 𝓅𝒶𝓇𝒶 𝓇𝑒𝓈𝓅𝑜𝓃𝒹𝑒𝓇 𝟻 𝓂𝒾𝓃𝓊𝓉𝑜𝓈\n\n𝗦𝗼𝗹𝗼 𝗘𝗹 𝗥𝗲𝗺𝗶𝘁𝗲𝗻𝘁𝗲 𝗣𝘂𝗲𝗱𝗲 𝗥𝗲𝘀𝗽𝗼𝗻𝗱𝗲𝗿`,
-            footer: _config.bot.name,
             image: { url: video.thumbnail },
-            buttons: [
-                { buttonId: 'audio', buttonText: { displayText: 'Audio' } },
-                { buttonId: 'video', buttonText: { displayText: 'Video' } }
-            ],
-            headerType: 6,
-            viewOnce: true
         });
 
         const filter = response => response.key.remoteJid === m.from && response.key.participant === m.sender;

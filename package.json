@@ -26,7 +26,7 @@
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
     "@hiudyy/ytdl": "^0.2.3",
-    "@nazi-team/baileys": "npm:@fizzxydev/baileys-pro@latest",
+    "@nazi-team/baileys": "git@github.com:Skidy89/Baileys",
     "axios": "^1.7.9",
     "axios-cookiejar-support": "^5.0.5",
     "qrcode": "^1.5.4",

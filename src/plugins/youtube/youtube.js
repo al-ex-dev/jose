@@ -2,8 +2,7 @@ import YouTube from "../../scraper/youtube.js"
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
-const ytmp4 = "e"
-const ytmp3 + "e"
+const { ytmp3 } = require('@hiudyy/ytdl')
 
 export default {
     name: 'youtube',

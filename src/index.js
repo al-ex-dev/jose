@@ -3,6 +3,7 @@ import baileys, { DisconnectReason, makeInMemoryStore, useMultiFileAuthState, ge
 import pino from "pino"
 import axios from "axios"
 import readline from "readline"
+import QRCode from "qrcode"
 import { exec } from "child_process"
 import { _prototype } from "../lib/_whatsapp.js"
 import { _content } from "../lib/_content.js"
@@ -41,11 +42,15 @@ const start = async () => {
 
     store.bind(sock.ev);
     sock.ev.on("creds.update", saveCreds)
-    if (!sock.authState.creds.registered) {
-        console.log(`Emparejamiento con este código: ${await sock.requestPairingCode(await question("Ingresa tu número de WhatsApp activo: "), "NAZITEAM")}`)
-    }
 
-    sock.ev.on("connection.update", ({ connection, lastDisconnect }) => {
+    sock.ev.on("connection.update", ({ connection, lastDisconnect, qr }) => {
+        if (qr) {
+                console.log('[ ! ] ' + "scan this qr")
+                QRCode.toString(qr, {
+                    type: "terminal",
+                    errorCorrectionLevel: "L",
+                }).then(console.log)
+            }
         if (connection === "close") {
             const reconect = (lastDisconnect.error)?.output?.statusCode !== DisconnectReason.loggedOut
             console.log("Error en la conexión", lastDisconnect.error, "Reconectando", reconect);

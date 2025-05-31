@@ -31,7 +31,6 @@ const detect = (t) => {
 };
 
 const start = async () => {
-    const store = makeInMemoryStore({ logger: pino().child({ level: "silent", stream: "store" }) })
     const { state, saveCreds } = await useMultiFileAuthState("./auth/session");
     const sock = _prototype({
         logger: pino({ level: "silent" }),
@@ -40,7 +39,6 @@ const start = async () => {
         printQRInTerminal: false
     })
 
-    store.bind(sock.ev);
     sock.ev.on("creds.update", saveCreds)
     if (!sock.authState.creds.registered) {
         console.log(`Emparejamiento con este código: ${await sock.requestPairingCode(await question("Ingresa tu número de WhatsApp activo: "), "NAZITEAM")}`)
